@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "132434659741",
+    "firebase_url": "https://licenta-df25e-default-rtdb.firebaseio.com",
+    "project_id": "licenta-df25e",
+    "storage_bucket": "licenta-df25e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132434659741:android:80fa32e9530640a3cb4774",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "132434659741-p0faq28vkgq54pbmvo68omaboel61cup.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1bvV9JDa4XIAQ417b9ZB2wQbEMEzf8dk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "132434659741-p0faq28vkgq54pbmvo68omaboel61cup.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "132434659741-7efknb0846o9j9vn1ocviqpgronsisfo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterApplication1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
