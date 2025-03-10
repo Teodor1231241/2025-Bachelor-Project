@@ -98,13 +98,13 @@ class _SearchPageState extends State<SearchPage> {
             pinned: true,
             expandedHeight: 120,
             flexibleSpace: FlexibleSpaceBar(
-              title: const Text('Modern Search'),
+              title: const Text('BiteBuddy'),
               background: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [Colors.indigo.shade800, Colors.indigo.shade500],
+                    colors: [const Color.fromARGB(255, 116, 128, 215), const Color.fromARGB(255, 124, 139, 223)],
                   ),
                 ),
               ),
