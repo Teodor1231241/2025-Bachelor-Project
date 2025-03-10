@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 import 'user_list.dart'; // Import the new feature
+import 'Auth.dart'; // Import the new authentication page
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Modern Search',
+      title: 'Bite Buddy',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -24,39 +26,48 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
         useMaterial3: true,
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.grey.shade100,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: const BorderSide(color: Colors.indigo, width: 2),
-          ),
-        ),
       ),
-      home: const SearchPage(),
+      home: const AuthGate(), // Redirect to authentication page first
+    );
+  }
+}
+
+// Handles user authentication
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return const SearchPage(); // If authenticated, go to main page
+        } else {
+          return const AuthPage(); // Otherwise, show login page
+        }
+      },
     );
   }
 }
 
 class AddUser {
-  final String fullName;
-  final String company;
-  final int age;
+  final String RestaurantName;
+  final String Adress;
+  final int Number;
+  final String googleName;
 
-  AddUser(this.fullName, this.company, this.age);
+  AddUser(this.RestaurantName, this.Adress, this.Number, this.googleName);
 
   Future<void> addUser() async {
     CollectionReference users = FirebaseFirestore.instance.collection('searches');
 
     try {
       DocumentReference docRef = await users.add({
-        'full_name': fullName,
-        'company': company,
-        'age': age,
+        'Restaurant_Name': RestaurantName,
+        'Adress': Adress,
+        'Number': Number,
+        'google_name': googleName,
       });
       print("User Added with ID: ${docRef.id}");
     } catch (error) {
@@ -79,6 +90,15 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController _ageController = TextEditingController();
   String _searchQuery = '';
 
+  // Function to handle logout
+  void _logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    // Navigate back to the authentication page
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const AuthGate()),
+    );
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -90,6 +110,9 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
+    final String googleName = user?.displayName ?? 'Unknown';
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -104,11 +127,22 @@ class _SearchPageState extends State<SearchPage> {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [const Color.fromARGB(255, 116, 128, 215), const Color.fromARGB(255, 124, 139, 223)],
+                    colors: [
+                      const Color.fromARGB(255, 116, 128, 215),
+                      const Color.fromARGB(255, 124, 139, 223),
+                    ],
                   ),
                 ),
               ),
             ),
+            // Add a logout button to the right side of the app bar
+            
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout, color: Colors.white, size: 30,),
+                onPressed: () => _logout(context),
+              ),
+            ],
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -170,7 +204,7 @@ class _SearchPageState extends State<SearchPage> {
                   TextField(
                     controller: _fullNameController,
                     decoration: const InputDecoration(
-                      labelText: 'Full Name',
+                      labelText: 'Restaurant Name',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -178,7 +212,7 @@ class _SearchPageState extends State<SearchPage> {
                   TextField(
                     controller: _companyController,
                     decoration: const InputDecoration(
-                      labelText: 'Company',
+                      labelText: 'Address',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -186,7 +220,7 @@ class _SearchPageState extends State<SearchPage> {
                   TextField(
                     controller: _ageController,
                     decoration: const InputDecoration(
-                      labelText: 'Age',
+                      labelText: 'Number',
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.number,
@@ -200,9 +234,9 @@ class _SearchPageState extends State<SearchPage> {
                       int age = int.tryParse(_ageController.text) ?? 0;
 
                       // Call the AddUser function with the current values
-                      AddUser(fullName, company, age).addUser();
+                      AddUser(fullName, company, age, googleName).addUser();
                     },
-                    child: const Text("Add User"),
+                    child: const Text("Search"),
                   ),
                   const SizedBox(height: 30),
 
