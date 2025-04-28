@@ -71,33 +71,21 @@ class AddUser {
   Future<void> addUser() async {
     CollectionReference users = FirebaseFirestore.instance.collection('searches');
     try {
-      // Debug print to verify all fields
-      print('Saving to Firestore: {'
-          'Restaurant_Name: $restaurantName, '
-          'Adress: $address, '
-          'Language: $language, '
-          'google_name: $googleName, '
-          'google_user_photo: $googleUserPhoto, '
-          'updated: $updated}');
-
       DocumentReference docRef = await users.add({
         'Restaurant_Name': restaurantName,
         'Adress': address,
         'Language': language,
         'google_name': googleName,
         'google_user_photo': googleUserPhoto.isEmpty 
-            ? 'https://via.placeholder.com/150'  // Ensure non-empty value
+            ? 'https://via.placeholder.com/150'
             : googleUserPhoto,
         'Updated': updated,
+        'timestamp': FieldValue.serverTimestamp(),
       });
       
-      // Verify document creation
-      print('Document created with ID: ${docRef.id}');
       DocumentSnapshot doc = await docRef.get();
-      print('Saved data: ${doc.data()}');
 
     } catch (error) {
-      print("Failed to add user: $error");
       rethrow;
     }
   }
@@ -212,19 +200,43 @@ class _SearchPageState extends State<SearchPage> {
             pinned: true,
             expandedHeight: 120,
             flexibleSpace: FlexibleSpaceBar(
-              title: const Text('Bite Buddy'),
+              title: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    '/web/logo.png', 
+                    width: 40,
+                    height: 40,
+                    errorBuilder: (context, error, stackTrace) => 
+                      const Icon(Icons.restaurant, size: 30),
+                  ),
+                  const SizedBox(width: 10),
+                  const Text('Bite Buddy'),
+                ],
+              ),
               background: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Color.fromARGB(255, 116, 128, 215),
-                      Color.fromARGB(255, 124, 139, 223),
+                      Color.fromARGB(255, 187, 192, 222),
+                      Color.fromARGB(255, 187, 192, 222),
                     ],
                   ),
                 ),
               ),
             ),
             actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: NetworkImage(
+                    googleUserPhoto.isNotEmpty 
+                        ? googleUserPhoto 
+                        : 'https://via.placeholder.com/150'
+                  ),
+                ),
+              ),
               IconButton(
                 icon: const Icon(Icons.logout, color: Colors.white, size: 30),
                 onPressed: () => _logout(context),
