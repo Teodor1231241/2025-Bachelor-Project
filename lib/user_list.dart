@@ -1,9 +1,55 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:math';
 
 class UserList extends StatelessWidget {
   const UserList({super.key});
+
+  // Function to fetch first photo from Unsplash based on restaurant name with random page
+  Future<String> _fetchCoverPhoto(String restaurantName, int index) async {
+    try {
+      final randomPage = Random().nextInt(10) + 1; // Random page between 1-10
+      final response = await http.get(
+        Uri.parse('https://api.unsplash.com/search/photos?page=$randomPage&query=$restaurantName restaurant&client_id=QypFFqHbs4Y7YgEq7WM54sUYc6f9Gt0DAYFmErkK1vc'),
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['results'] != null && data['results'].isNotEmpty) {
+          // Use index to select different photo from results
+          final resultIndex = min(index, data['results'].length - 1);
+          return data['results'][resultIndex]['urls']['regular'];
+        }
+      }
+      return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
+    } catch (e) {
+      return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
+    }
+  }
+
+  // Function to fetch 10 random restaurant photos from Unsplash with random page
+  Future<List<String>> _fetchRestaurantPhotos(int index) async {
+    try {
+      final randomPage = Random().nextInt(10) + 1; // Random page between 1-10
+      final response = await http.get(
+        Uri.parse('https://api.unsplash.com/search/photos?page=$randomPage&per_page=10&query=restaurant&client_id=QypFFqHbs4Y7YgEq7WM54sUYc6f9Gt0DAYFmErkK1vc'),
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['results'] != null && data['results'].isNotEmpty) {
+          // Shuffle the results to get different photos for each card
+          final results = List.from(data['results']);
+          results.shuffle();
+          return List<String>.from(results.map((photo) => photo['urls']['regular']));
+        }
+      }
+      return List.filled(10, 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    } catch (e) {
+      return List.filled(10, 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,13 +134,10 @@ class UserList extends StatelessWidget {
                                 backgroundImage: profilePhotoUrl.isNotEmpty
                                     ? NetworkImage(profilePhotoUrl)
                                     : const NetworkImage(
-                                        'https://via.placeholder.com/150'),
+                                        '/web/user_logo.png'),
                                 radius: 20,
                                 onBackgroundImageError: (_, __) =>
                                     const Icon(Icons.error),
-                                child: profilePhotoUrl.isEmpty
-                                    ? const Icon(Icons.person)
-                                    : null,
                               ),
                               const SizedBox(width: 10),
                               Expanded(
@@ -145,29 +188,28 @@ class UserList extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                if (userData['cover_photo'] != null)
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.network(
-                                      userData['cover_photo'],
-                                      width: double.infinity,
-                                      height: 200,
-                                      fit: BoxFit.cover,
-                                      loadingBuilder:
-                                          (context, child, progress) {
-                                        return progress == null
-                                            ? child
-                                            : const SizedBox(
-                                                height: 200,
-                                                child: Center(
-                                                  child: CircularProgressIndicator(),
-                                                ),
-                                              );
-                                      },
-                                      errorBuilder: (_, __, ___) =>
-                                          const Icon(Icons.broken_image),
-                                    ),
-                                  ),
+                                FutureBuilder<String>(
+                                  future: _fetchCoverPhoto(userData['Restaurant_Name'] ?? 'restaurant', index),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      return const SizedBox(
+                                        height: 200,
+                                        child: Center(child: CircularProgressIndicator()),
+                                      );
+                                    }
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(
+                                        snapshot.data ?? 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                                        width: double.infinity,
+                                        height: 200,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (_, __, ___) =>
+                                            const Icon(Icons.broken_image),
+                                      ),
+                                    );
+                                  },
+                                ),
                                 const SizedBox(height: 8),
                                 Text(
                                   userData['Restaurant_Name'] ??
@@ -178,43 +220,37 @@ class UserList extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                if (userData['photos'] != null)
-                                  SizedBox(
-                                    height: 100,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount:
-                                          _parsePhotos(userData['photos']).length,
-                                      itemBuilder: (context, photoIndex) {
-                                        final photoUrl = _parsePhotos(
-                                            userData['photos'])[photoIndex];
-                                        return Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8),
-                                          child: Image.network(
-                                            photoUrl,
-                                            width: 100,
-                                            height: 100,
-                                            fit: BoxFit.cover,
-                                            loadingBuilder:
-                                                (context, child, progress) {
-                                              return progress == null
-                                                  ? child
-                                                  : const SizedBox(
-                                                      width: 100,
-                                                      height: 100,
-                                                      child: Center(
-                                                          child:
-                                                              CircularProgressIndicator()),
-                                                    );
-                                            },
-                                            errorBuilder: (_, __, ___) =>
-                                                const Icon(Icons.broken_image),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
+                                FutureBuilder<List<String>>(
+                                  future: _fetchRestaurantPhotos(index),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      return const SizedBox(
+                                        height: 100,
+                                        child: Center(child: CircularProgressIndicator()),
+                                      );
+                                    }
+                                    return SizedBox(
+                                      height: 100,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: snapshot.data?.length ?? 0,
+                                        itemBuilder: (context, photoIndex) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(right: 8),
+                                            child: Image.network(
+                                              snapshot.data?[photoIndex] ?? 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                                              width: 100,
+                                              height: 100,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (_, __, ___) =>
+                                                  const Icon(Icons.broken_image),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
                               ],
                             ),
                           const SizedBox(height: 15),
@@ -235,12 +271,5 @@ class UserList extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  List<String> _parsePhotos(dynamic photos) {
-    if (photos == null) return [];
-    if (photos is String) return photos.split('\n');
-    if (photos is List) return photos.cast<String>();
-    return [];
   }
 }
