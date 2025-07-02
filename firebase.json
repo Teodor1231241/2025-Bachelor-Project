@@ -8,7 +8,7 @@
       "android": {
         "default": {
           "projectId": "licenta-df25e",
-          "appId": "1:132434659741:android:80fa32e9530640a3cb4774",
+          "appId": "1:placeholder:android:placeholder",
           "fileOutput": "android/app/google-services.json"
         }
       },
@@ -16,11 +16,11 @@
         "lib/firebase_options.dart": {
           "projectId": "licenta-df25e",
           "configurations": {
-            "android": "1:132434659741:android:80fa32e9530640a3cb4774",
-            "ios": "1:132434659741:ios:74ab2186def38f9fcb4774",
-            "macos": "1:132434659741:ios:74ab2186def38f9fcb4774",
-            "web": "1:132434659741:web:357e198174946e8fcb4774",
-            "windows": "1:132434659741:web:70a4719e53fda1cacb4774"
+            "android": "1:placeholder:android:placeholder",
+            "ios": "1:placeholder:ios:placeholder",
+            "macos": "1:placeholder:ios:placeholder",
+            "web": "1:placeholder:web:placeholder",
+            "windows": "1:placeholder:web:placeholder"
           }
         }
       }

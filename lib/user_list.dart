@@ -13,7 +13,7 @@ class UserList extends StatelessWidget {
     try {
       final randomPage = Random().nextInt(10) + 1; // Random page between 1-10
       final response = await http.get(
-        Uri.parse('https://api.unsplash.com/search/photos?page=$randomPage&query=$restaurantName restaurant&client_id=QypFFqHbs4Y7YgEq7WM54sUYc6f9Gt0DAYFmErkK1vc'),
+        Uri.parse('https://api.unsplash.com/search/photos?page=$randomPage&query=$restaurantName restaurant&client_id=placeholder'),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -23,9 +23,9 @@ class UserList extends StatelessWidget {
           return data['results'][resultIndex]['urls']['regular'];
         }
       }
-      return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
+      return 'https://images.unsplash.com/photo-1517248135467-placeholder?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
     } catch (e) {
-      return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
+      return 'https://images.unsplash.com/photo-1517248135467-placeholder?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
     }
   }
 
@@ -34,7 +34,7 @@ class UserList extends StatelessWidget {
     try {
       final randomPage = Random().nextInt(10) + 1; // Random page between 1-10
       final response = await http.get(
-        Uri.parse('https://api.unsplash.com/search/photos?page=$randomPage&per_page=10&query=restaurant&client_id=QypFFqHbs4Y7YgEq7WM54sUYc6f9Gt0DAYFmErkK1vc'),
+        Uri.parse('https://api.unsplash.com/search/photos?page=$randomPage&per_page=10&query=restaurant&client_id=placeholder'),
       );
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -238,7 +238,7 @@ class UserList extends StatelessWidget {
                                           return Padding(
                                             padding: const EdgeInsets.only(right: 8),
                                             child: Image.network(
-                                              snapshot.data?[photoIndex] ?? 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+                                              snapshot.data?[photoIndex] ?? 'https://images.unsplash.com/photo-1517248135467-placeholder?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
                                               width: 100,
                                               height: 100,
                                               fit: BoxFit.cover,

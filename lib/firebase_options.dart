@@ -41,19 +41,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCBCNPsAZShfin2AlM0_WshBacQHxhBo-o',
-    appId: '1:132434659741:web:357e198174946e8fcb4774',
-    messagingSenderId: '132434659741',
+    apiKey: 'placeholder',
+    appId: '1:placeholder:web:placeholder',
+    messagingSenderId: 'placeholder',
     projectId: 'licenta-df25e',
     authDomain: 'licenta-df25e.firebaseapp.com',
     databaseURL: 'https://licenta-df25e-default-rtdb.firebaseio.com',
     storageBucket: 'licenta-df25e.firebasestorage.app',
-    measurementId: 'G-X8KST114MC',
+    measurementId: 'G-placeholder',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB1bvV9JDa4XIAQ417b9ZB2wQbEMEzf8dk',
-    appId: '1:132434659741:android:80fa32e9530640a3cb4774',
+    apiKey: 'placeholder',
+    appId: '1:placeholder:android:placeholder',
     messagingSenderId: '132434659741',
     projectId: 'licenta-df25e',
     databaseURL: 'https://licenta-df25e-default-rtdb.firebaseio.com',
@@ -61,36 +61,36 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBtaRBhOF7cy1VJ9M2JfU4UOZdHhVAMbKM',
-    appId: '1:132434659741:ios:74ab2186def38f9fcb4774',
-    messagingSenderId: '132434659741',
+    apiKey: 'placeholder',
+    appId: '1:placeholder:ios:placeholder',
+    messagingSenderId: 'placeholder',
     projectId: 'licenta-df25e',
     databaseURL: 'https://licenta-df25e-default-rtdb.firebaseio.com',
     storageBucket: 'licenta-df25e.firebasestorage.app',
-    iosClientId: '132434659741-7efknb0846o9j9vn1ocviqpgronsisfo.apps.googleusercontent.com',
+    iosClientId: '132434659741-placeholder.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterApplication1',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBtaRBhOF7cy1VJ9M2JfU4UOZdHhVAMbKM',
-    appId: '1:132434659741:ios:74ab2186def38f9fcb4774',
-    messagingSenderId: '132434659741',
+    apiKey: 'placeholder',
+    appId: '1:placeholder:ios:placeholder',
+    messagingSenderId: 'placeholder',
     projectId: 'licenta-df25e',
     databaseURL: 'https://licenta-df25e-default-rtdb.firebaseio.com',
     storageBucket: 'licenta-df25e.firebasestorage.app',
-    iosClientId: '132434659741-7efknb0846o9j9vn1ocviqpgronsisfo.apps.googleusercontent.com',
+    iosClientId: 'placeholder-placeholder.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterApplication1',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCBCNPsAZShfin2AlM0_WshBacQHxhBo-o',
-    appId: '1:132434659741:web:70a4719e53fda1cacb4774',
-    messagingSenderId: '132434659741',
+    apiKey: 'placeholder-o',
+    appId: '1:placeholder:web:placeholder',
+    messagingSenderId: 'placeholder',
     projectId: 'licenta-df25e',
     authDomain: 'licenta-df25e.firebaseapp.com',
     databaseURL: 'https://licenta-df25e-default-rtdb.firebaseio.com',
     storageBucket: 'licenta-df25e.firebasestorage.app',
-    measurementId: 'G-VQEFEEBWJY',
+    measurementId: 'G-placeholder',
   );
 
 }

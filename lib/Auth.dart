@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 GoogleSignIn googleSignIn = GoogleSignIn(
-  clientId: "481dgri4bjuh8549o29il6fhn8b8dol5.apps.googleusercontent.com", // Web Client ID
+  clientId: "placeholder.apps.googleusercontent.com", // Web Client ID
   scopes: ['email'],
 );
 
