@@ -1,7 +1,7 @@
 # 🍽️ Personalized Restaurant Recommendation Web App
 
 
-A **cross-platform web application** for **personalized restaurant recommendations** leveraging **Flutter, Firebase, Google Places API, and advanced NLP models (Gemma-2-2b-it)**. The system automatically scrapes, processes, and analyzes restaurant reviews to extract structured insights for delivering **contextual, relevant recommendations** based on dietary preferences, allergens, budget, and occasion.
+A **cross-platform web application** for **personalized restaurant recommendations** leveraging **Flutter, Firebase, Google Places API, and advanced NLP models (Gemma-2-2b-it)**. The system automatically scrapes, processes, and analyzes restaurant reviews to extract structured insights for delivering **contextual, relevant recommendations** based on dietary preferences, allergens, budget, and occasion. You can access the full final version on the website - https://licenta-df25e.web.app/ -.
 
 ---
 
