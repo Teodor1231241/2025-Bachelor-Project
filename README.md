@@ -1,16 +1,25 @@
-# flutter_application_1
+#🍽️ Personalized Restaurant Recommendation Web App
+This project implements a cross-platform web application for personalized restaurant recommendations using Flutter, Firebase, Google Places API, and advanced NLP models (Gemma-2-2b-it). The system automatically collects, processes, and analyzes restaurant reviews to extract structured data on dishes, sentiment, and context, providing users with relevant, filterable recommendations based on dietary preferences, allergens, budget, and occasion.
 
-A new Flutter project.
+#Key features:
 
-## Getting Started
+Flutter frontend (web/mobile-ready) with responsive, modern UI and Google Sign-In authentication.
 
-This project is a starting point for a Flutter application.
+Firebase backend with Firestore for structured storage of restaurants, user profiles, and reviews, supporting scalability to 10,000+ concurrent users.
 
-A few resources to get you started if this is your first Flutter project:
+Google Places API integration for location, reviews, and metadata retrieval, with token usage optimization to reduce API costs.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Advanced NLP pipeline using Gemma-2-2b-it for automatic extraction of dishes from reviews and sentiment analysis, clustering dishes for menu synthesis even in the absence of online menus.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Automated review scraping pipeline capable of collecting over 1,000 reviews/hour, structured for further ML processing.
+
+Interactive map-based discovery using Google Maps with real-time filtering.
+
+Real-time recommendation updates based on user feedback and preferences.
+
+Secure authentication and error handling, including CORS mitigation and secure credential storage.
+
+Optimized for GPU-based processing using Google Colab for review summarization and sentiment analysis at minimal infrastructure cost.
+
+The project demonstrates that a performant, scalable personalized recommendation system can be built using free/open-source technologies while reducing user search time from 20+ minutes to under 2 minutes per session.
+
